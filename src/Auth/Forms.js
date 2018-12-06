@@ -5,22 +5,22 @@ import { TextField } from 'material-ui'
 
 const Forms = props => (
     <Paper
-    style={{
-        margin: 15,
-        padding: 10
-    }}
+        style={{
+            margin: 15,
+            padding: 10
+        }}
     >
         <div
-        style={{
-            border: '1px solid #a6a6a6',
-            width:'30%',
-            marginLeft: '35%'
-        }}
+            style={{
+                border: '1px solid #a6a6a6',
+                width: '30%',
+                marginLeft: '35%'
+            }}
         >
             <TextField
                 value={props.email}
                 type="email"
-                onChange={props.handleLoginChange}
+                onChange={(event) => props.loginChangeAction(event.target.value)}
                 hintText="email"
                 style={{
                     width: "80%",
@@ -32,7 +32,7 @@ const Forms = props => (
             <TextField
                 value={props.password}
                 type="password"
-                onChange={props.handlePasswordChange}
+                onChange={event => props.passwordChangeAction(event.target.value)}
                 hintText="hasło"
                 style={{
                     width: "80%",

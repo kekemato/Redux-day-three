@@ -1,48 +1,19 @@
 import React from 'react'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
+import { connect } from 'react-redux'
 
 import Forms from './Forms'
-import { auth, googleProvider } from '../firebaseConfig'
+
+import { initAuthChangeListeningAsyncAction, logOutAsyncAction, logInWithGoogleAsyncAction, logInAsyncAction, loginChangeAction, passwordChangeAction } from '../state/auth'
 
 class Auth extends React.Component {
-    state = {
-        email: "",
-        password: "",
-        isUserLoggedIn: false
-    }
-
     componentDidMount() {
-        auth.onAuthStateChanged(
-            user => {
-                if (user) {
-                    this.setState({ isUserLoggedIn: true })
-                } else {
-                    this.setState({ isUserLoggedIn: false })
-                }
-            }
-        )
+        this.props._initAuthChangeListeningAsyncAction()
     }
-
-    handleLoginChange = event => this.setState({ email: event.target.value })
-    handlePasswordChange = event => this.setState({ password: event.target.value })
-
-    handleLogInClick = () => {
-        auth.signInWithEmailAndPassword(this.state.login, this.state.password)
-            .catch(error => {
-                alert('Something is wrong!')
-                console.log(error)
-            })
-    }
-
-    handleLogInWithGoogleClick = () => {
-        auth.signInWithPopup(googleProvider)
-    }
-
-    onLogOutClickHandler = () => auth.signOut()
 
     render() {
         return (
-            this.state.isUserLoggedIn ?
+            this.props._isUserLoggedIn ?
                 <div>
                     <FloatingActionButton
                         secondary={true}
@@ -54,7 +25,7 @@ class Auth extends React.Component {
                             color: "white"
                         }
                         }
-                        onClick={this.onLogOutClickHandler}
+                        onClick={this.props._logOutAsyncAction}
                     >
                         Log Out
                     </FloatingActionButton>
@@ -62,15 +33,33 @@ class Auth extends React.Component {
                 </div>
                 :
                 <Forms
-                    email={this.state.email}
-                    password={this.state.password}
-                    handleLoginChange={this.handleLoginChange}
-                    handlePasswordChange={this.handlePasswordChange}
-                    handleLogInClick={this.handleLogInClick}
-                    handleLogInWithGoogleClick={this.handleLogInWithGoogleClick}
+                    email={this.props._email}
+                    password={this.props._password}
+                    loginChangeAction={this.props._loginChangeAction}
+                    passwordChangeAction={this.props._passwordChangeAction}
+                    handleLogInClick={this.props._logInAsyncAction}
+                    handleLogInWithGoogleClick={this.props._logInWithGoogleAsyncAction}
                 />
         )
     }
 }
 
-export default Auth
+const mapStateToProps = state => ({
+    _isUserLoggedIn: state.auth.isUserLoggedIn,
+    _email: state.auth.email,
+    _password: state.auth.password
+})
+
+const mapDispatchToProps = dispatch => ({
+    _initAuthChangeListeningAsyncAction: () => dispatch(initAuthChangeListeningAsyncAction()),
+    _logOutAsyncAction: () => dispatch(logOutAsyncAction()),
+    _logInWithGoogleAsyncAction: () => dispatch(logInWithGoogleAsyncAction()),
+    _logInAsyncAction: () => dispatch(logInAsyncAction()),
+    _loginChangeAction: (event) => dispatch(loginChangeAction(event)),
+    _passwordChangeAction: (event) => dispatch(passwordChangeAction(event))
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Auth)
