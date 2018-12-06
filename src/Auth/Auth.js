@@ -55,8 +55,8 @@ const mapDispatchToProps = dispatch => ({
     _logOutAsyncAction: () => dispatch(logOutAsyncAction()),
     _logInWithGoogleAsyncAction: () => dispatch(logInWithGoogleAsyncAction()),
     _logInAsyncAction: () => dispatch(logInAsyncAction()),
-    _loginChangeAction: (event) => dispatch(loginChangeAction(event)),
-    _passwordChangeAction: (event) => dispatch(passwordChangeAction(event))
+    _loginChangeAction: (event) => dispatch(loginChangeAction(event.target.value)),
+    _passwordChangeAction: (event) => dispatch(passwordChangeAction(event.target.value))
 })
 
 export default connect(

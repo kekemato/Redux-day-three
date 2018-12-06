@@ -1,4 +1,4 @@
-import { auth, googleProvider } from '../firebaseConfig'
+import { auth, googleProvider, database } from '../firebaseConfig'
 
 const LOG_IN = 'auth/LOG_IN'
 const LOG_OUT = 'auth/LOG_OUT'
@@ -17,6 +17,7 @@ export const initAuthChangeListeningAsyncAction = () => (dispatch, getState) => 
         user => {
             if (user) {
                 dispatch(logInAction(user))
+                dispatch(saveLogInTimestampAsyncAction())
             } else {
                 dispatch(logOutAction())
             }
@@ -49,6 +50,12 @@ export const passwordChangeAction = event => ({
     type: PASSWORD_CHANGE_ACTION,
     password: event
 })
+
+const saveLogInTimestampAsyncAction = () => (dispatch, getState) => {
+    database.ref('loginsLogs').push({
+        timestamp: Date.now()
+    })
+}
 
 const logInAction = (user) => ({
     type: LOG_IN,

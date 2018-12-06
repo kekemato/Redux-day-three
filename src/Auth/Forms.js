@@ -20,7 +20,7 @@ const Forms = props => (
             <TextField
                 value={props.email}
                 type="email"
-                onChange={(event) => props.loginChangeAction(event.target.value)}
+                onChange={props.loginChangeAction}
                 hintText="email"
                 style={{
                     width: "80%",
@@ -32,7 +32,7 @@ const Forms = props => (
             <TextField
                 value={props.password}
                 type="password"
-                onChange={event => props.passwordChangeAction(event.target.value)}
+                onChange={props.passwordChangeAction}
                 hintText="hasło"
                 style={{
                     width: "80%",
