@@ -2,7 +2,7 @@ import React from 'react'
 import TextField from 'material-ui/TextField'
 
 import { connect } from 'react-redux'
-import { changeTextAction, saveTextAsyncAction } from './state/userData'
+import { changeTextAction, saveTextToDbAsyncAction } from './state/userData'
 import { RaisedButton } from 'material-ui';
 
 const UserData = (props) => {
@@ -16,7 +16,7 @@ const UserData = (props) => {
             <RaisedButton
                 primary={true}
                 label={'Add to firebase'}
-                onClick={props._saveTextAsyncAction}
+                onClick={props._saveTextToDbAsyncAction}
             />
         </div>
     )
@@ -28,7 +28,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     _changeTextAction: (event) => dispatch(changeTextAction(event.target.value)),
-    _saveTextAsyncAction: () => dispatch(saveTextAsyncAction())
+    _saveTextToDbAsyncAction: () => dispatch(saveTextToDbAsyncAction())
 })
 
 export default connect(

@@ -6,10 +6,23 @@ const INITIAL_STATE = {
     text: ''
 }
 
-export const saveTextAsyncAction = () => (dispatch, getState) => {
-    database.ref('userData').push({
-        text: getState().userData.text
+export const saveTextToDbAsyncAction = () => (dispatch, getState) => {
+    const text = getState().userData.text
+    const uuid = getState().auth.user.uid
+
+    database.ref(`userData/${uuid}`).set({
+        text
     })
+}
+
+export const loadTextFromDbAsyncAction = () => (dispatch, getState) => {
+    const uuid = getState().auth.user.uid
+    database.ref(`userData/${uuid}/text`).once(
+        'value',
+        snapshot => {
+            dispatch(changeTextAction(snapshot.val() || ''))
+        }
+    )
 }
 
 export const changeTextAction = (text) => ({
