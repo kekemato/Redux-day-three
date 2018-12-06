@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
+import Auth from './Auth'
 
 class App extends Component {
   render() {
     return (
-      <div>
-
-      </div>
+      <Auth>
+        <div>
+          SUPER SECRET CONTENT!
+        </div>
+      </Auth>
     )
   }
 }
